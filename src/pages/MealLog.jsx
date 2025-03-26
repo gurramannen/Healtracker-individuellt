@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { addMeal, updateMeal } from "../reducers/mealSlice";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from '@/components/ui/button';
+import { Toaster, toast } from 'react-hot-toast';
 
 const MealLog = () => {
-
   const dispatch = useDispatch();
   const mealLogs = useSelector((state) => state.meals?.mealLogs ?? []);
 
@@ -22,7 +22,6 @@ const MealLog = () => {
 
   const [editingMeal, setEditingMeal] = useState(null);
   const [error, setError] = useState('');
-  // const [showForm, setShowForm] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,9 +40,11 @@ const MealLog = () => {
     setError('');
     if (editingMeal) {
       dispatch(updateMeal(meal));
+      toast.success('Måltid uppdaterad!');
       setEditingMeal(null);
     } else {
       dispatch(addMeal({ ...meal, id: uuidv4() }));
+      toast.success('Måltid loggad!');
     }
     setMeal({
       title: '',
@@ -54,17 +55,16 @@ const MealLog = () => {
       fat: '',
       category: ''
     });
-    // setShowForm(false);
   };
 
   const handleEdit = (meal) => {
     setMeal(meal);
     setEditingMeal(meal);
-    // setShowForm(true);
   };
 
   return (
     <main className="container mx-auto p-4 flex justify-center flex-row gap-4 items-start flex-wrap max-w-[1000px]">
+      <Toaster />
       <form onSubmit={handleSubmit} className="bg-white shadow-md card px-8 pt-6 max-w-[500px]">
         {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
         <div className="mb-4">
@@ -131,4 +131,3 @@ const MealLog = () => {
 };
 
 export default MealLog;
-

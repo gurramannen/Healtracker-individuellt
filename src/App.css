@@ -46,3 +46,21 @@
   width: 100%; /* Gör den responsiv */
   margin: 0 auto; /* Centrera innehållet */
 }
+
+/* Dark mode styles */
+body.dark {
+  background-color: #1a202c;
+  color: #a0aec0;
+}
+
+body.dark .bg-white {
+  background-color: #2d3748;
+}
+
+body.dark .text-black {
+  color: #a0aec0;
+}
+
+body.dark .shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
