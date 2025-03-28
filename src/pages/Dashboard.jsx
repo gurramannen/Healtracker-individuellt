@@ -46,6 +46,9 @@ const Dashboard = () => {
           <KcalStatus />
           {/* Progressbar som uppdateras utifrån inloggade kalorier relativt dagligt mål */}
           <Progress value={(loggedCalories / dailyCalorieGoal) * 100} />
+        <div className="md:col-span-1">
+          <TodaysMeals />
+        </div>
           <AddWeight onSubmit={() => {}} />
           <section className="w-full max-w-xl">
         <WeightChart weightData={weightData} />
@@ -55,9 +58,6 @@ const Dashboard = () => {
           </section>
         </div>
         {/* Höger kolumn */}
-        <div className="md:col-span-1">
-          <TodaysMeals />
-        </div>
       </div>
     </main>
   );
