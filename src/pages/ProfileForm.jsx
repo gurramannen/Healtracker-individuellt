@@ -15,19 +15,17 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const ProfileForm = () => {
-/*   const profileState = useSelector((state) => state.profile); */
-  const [errorMessage, setErrorMessage] = useState();
-
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { gender, weight, height, age, activityLevel, goal, tdee, birthDate } =
     useSelector((state) => state.profile);
 
-  const latestWeight =
-    weight.length > 0 ? weight[weight.length - 1].weight : "";
+  const latestWeight = weight.length > 0 ? weight[weight.length - 1].weight : "";
   const [weightInput, setWeightInput] = useState(latestWeight);
 
+  // Sätt initiala värden om de finns i profile-staten
   useEffect(() => {
     if (gender) dispatch(setGender(gender));
     if (height) dispatch(setHeight(height));
@@ -36,9 +34,10 @@ const ProfileForm = () => {
     if (goal) dispatch(setGoal(goal));
   }, [dispatch, gender, height, age, activityLevel, goal]);
 
+  // Beräkna TDEE när vikt, goal eller aktivitetsnivå ändras
   useEffect(() => {
-    calculateTDEE(); // Beräkna TDEE när goal ändras
-  }, [goal, weight, activityLevel]); // Lyssna på förändringar i dessa värden 
+    calculateTDEE();
+  }, [goal, weight, activityLevel]);
 
   const calculateTDEE = () => {
     const currentWeight = parseFloat(latestWeight);
@@ -77,20 +76,18 @@ const ProfileForm = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-
     const newWeightValue = parseFloat(weightInput);
 
-    if (!weightInput || !gender || !height || !birthDate ) {
+    if (!weightInput || !gender || !height || !birthDate) {
       console.error("Missing values");
-      setErrorMessage("Alla fällt måste fyllas i");
+      setErrorMessage("Alla fält måste fyllas i");
       return;
     }
 
     const hasWeightChanged = newWeightValue !== latestWeight;
-
     const date = new Date().toISOString().split("T")[0];
 
-    // Lägg till vikten i weight-arrayen endast om den har ändrats
+    // Lägg till vikten i weight-arrayen om den har ändrats
     if (hasWeightChanged) {
       dispatch(addWeight({ weight: newWeightValue, date }));
     }
@@ -128,8 +125,7 @@ const ProfileForm = () => {
         <div className="mb-4">
           <fieldset className="flex flex-col">
             <legend className="label-custom">
-              Kön <span className="font-normal">(viktig för uträkning av kalorier)</span>
-              :
+              Kön <span className="font-normal">(viktig för uträkning av kalorier)</span>:
             </legend>
             <div className="flex">
               <label className="block m-4">
@@ -172,7 +168,9 @@ const ProfileForm = () => {
           value={weightInput || ""}
           onChange={handleWeightChange}
           required
-          className={`block w-full border rounded p-2 mb-4 ${weightInput ? "" : "border-accent border-2"}`}
+          className={`block w-full border rounded p-2 mb-4 ${
+            weightInput ? "" : "border-accent border-2"
+          }`}
         />
 
         <label htmlFor="height" className="label-custom">
@@ -185,7 +183,9 @@ const ProfileForm = () => {
           value={height || ""}
           onChange={(e) => dispatch(setHeight(e.target.value))}
           required
-          className={`block w-full border rounded p-2 mb-4 ${height ? "" : "border-accent border-2"}`}
+          className={`block w-full border rounded p-2 mb-4 ${
+            height ? "" : "border-accent border-2"
+          }`}
         />
 
         <label htmlFor="birthdate" className="label-custom">
@@ -198,7 +198,9 @@ const ProfileForm = () => {
           value={birthDate || ""}
           onChange={handleBirthDateChange}
           required
-          className={`block w-full border rounded p-2 mb-4 ${birthDate ? "" : "border-accent border-2"}`}
+          className={`block w-full border rounded p-2 mb-4 ${
+            birthDate ? "" : "border-accent border-2"
+          }`}
         />
 
         <label htmlFor="activity-level" className="label-custom">
@@ -211,7 +213,9 @@ const ProfileForm = () => {
           onChange={(e) =>
             dispatch(setActivityLevel(parseFloat(e.target.value)))
           }
-          className={`block w-full border rounded p-2 mb-4 ${activityLevel ? "" : "border-accent border-2"}`}
+          className={`block w-full border rounded p-2 mb-4 ${
+            activityLevel ? "" : "border-accent border-2"
+          }`}
         >
           <option value={1.2}>Stillasittande (lite eller ingen träning)</option>
           <option value={1.375}>
@@ -235,26 +239,21 @@ const ProfileForm = () => {
           id="goal"
           value={goal}
           onChange={(e) => dispatch(setGoal(parseFloat(e.target.value)))}
-          className={`block w-full border rounded p-2 mb-4 `}
+          className="block w-full border rounded p-2 mb-4"
         >
           <option value="-500">Gå ner i vikt</option>
           <option value="0">Hålla vikten</option>
           <option value="500">Gå upp i vikt</option>
         </select>
 
-        <Button
-          onClick={handleSave}
-          className="w-full"
-        >
+        <Button onClick={handleSave} className="w-full">
           Spara
         </Button>
-        <p
-          className={`p-2 rounded m-2 ${errorMessage ? "border-2 border-accent" : ""}`}
-        >
+        <p className={`p-2 rounded m-2 ${errorMessage ? "border-2 border-accent" : ""}`}>
           {errorMessage}
         </p>
 
-        {tdee !==0 && (
+        {tdee !== 0 && (
           <h2 className="text-lg text-green-600 mt-4 text-center">
             Ditt totala dagliga energibehov: <br />
             <span className="font-bold">{Math.round(tdee)} kcal</span>
@@ -267,5 +266,3 @@ const ProfileForm = () => {
 };
 
 export default ProfileForm;
-
-

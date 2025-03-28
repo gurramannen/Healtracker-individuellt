@@ -50,8 +50,7 @@
 /* Dark mode styles */
 body.dark {
   background-color: #1a202c;
-  color: #a0aec0;
-}
+  color: #ffffff;}
 
 body.dark .bg-white {
   background-color: #2d3748;
@@ -63,4 +62,10 @@ body.dark .text-black {
 
 body.dark .shadow-md {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.dark .text-black,
+body.dark .text-accent,
+body.dark .text-gray-800 {
+  color: #ffffff !important;
 }
