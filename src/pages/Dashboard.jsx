@@ -53,9 +53,9 @@ const Dashboard = () => {
           <section className="w-full max-w-xl">
         <WeightChart weightData={weightData} />
       </section>
-          <section className="card">
+          {/* <section className="card">
             <EnergyPieChart energyData={energyData} />
-          </section>
+          </section> */}
         </div>
         {/* Höger kolumn */}
       </div>
